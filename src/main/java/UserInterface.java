@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -21,9 +22,8 @@ public class UserInterface {
 
 
         while (true) {
-            System.out.println("1. Create an account\n" +
-                    "2. Log into account\n" +
-                    "0. Exit");
+            printLoginInterface();
+
             String userInput = scan.nextLine();
             if (userInput.equals("0")) {
                 System.exit(0);
@@ -75,10 +75,10 @@ public class UserInterface {
 
 
         while (true) {
-            System.out.println("1. Balance\n" +
-                    "2. Log out\n" +
-                    "0. Exit");
+            printAccountInterface();
+
             String userInput = scan.nextLine();
+
             if (userInput.equals("0")) {
                 System.exit(0);
             } else if (userInput.equals("1")) {
@@ -95,6 +95,18 @@ public class UserInterface {
 
     public boolean checkAccountForDataBase(Account acc) {
         return DataBase.checkAccount("db.s3db", "card", acc.getCardNumber());
+    }
+
+    private void printLoginInterface() {
+        System.out.println("1. Create an account\n" +
+                "2. Log into account\n" +
+                "0. Exit");
+    }
+
+    private void printAccountInterface() {
+        System.out.println("1. Balance\n" +
+                "2. Log out\n" +
+                "0. Exit");
     }
 
 
