@@ -2,10 +2,10 @@ import javax.xml.crypto.Data;
 import java.util.Scanner;
 
 public class UserInterface {
-    private Scanner scan;
-    private Account currentCard;
-    private String fileName;
-    private String tableName;
+    private final Scanner scan;
+    private final String fileName;
+    private final String tableName;
+    private Account acc;
 
 
     public UserInterface(Scanner scan, String fileName, String tableName) {
@@ -25,20 +25,23 @@ public class UserInterface {
             printLoginInterface();
 
             String userInput = scan.nextLine();
-            if (userInput.equals("0")) {
-                System.exit(0);
-            } else if (userInput.equals("1")) {
-                create();
-            } else if (userInput.equals("2")) {
-                if (checkLogin()) {
-                    login();
-                } else continue;
+            switch (userInput) {
+                case "0":
+                    System.exit(0);
+                case "1":
+                    create();
+                    break;
+                case "2":
+                    if (checkLogin()) {
+                        login();
+                    }
+                    break;
             }
         }
     }
 
 
-    public void create() {
+    private void create() {
         Account acc = new Account();
         while(true) {
 
@@ -53,47 +56,33 @@ public class UserInterface {
         DataBase.insertAccount(this.fileName,this.tableName,acc.getCardNumber(),acc.getPinCode());
     }
 
-    public boolean checkLogin() {
-        System.out.println("Enter your card number:");
-        String userInputCardNumber = scan.nextLine();
-        System.out.println("Enter your PIN:");
-        String userInputPin = scan.nextLine();
 
 
-        if (DataBase.checkLogin()) {
-            System.out.println("You have successfully logged in!");
-            //currentCard = i;
-            return true;
-        }
-        System.out.println("Wrong card number or PIN!");
 
-        return false;
-    }
-
-
-    public void login() {
-
-
+    private void login() {
         while (true) {
             printAccountInterface();
 
             String userInput = scan.nextLine();
 
-            if (userInput.equals("0")) {
-                System.exit(0);
-            } else if (userInput.equals("1")) {
-                getBalance();
-            } else if (userInput.equals("2")) {
-                start();
+            switch (userInput) {
+                case "0":
+                    System.exit(0);
+                case "1":
+                    getBalance();
+                    break;
+                case "2":
+                    start();
+                    break;
             }
         }
     }
 
-    public void getBalance() {
-        System.out.println("Balance: " + currentCard.getBalance());
+    private void getBalance() {
+        System.out.println("Balance: " + acc.getBalance());
     }
 
-    public boolean checkAccountForDataBase(Account acc) {
+    private boolean checkAccountForDataBase(Account acc) {
         return DataBase.checkAccount("db.s3db", "card", acc.getCardNumber());
     }
 
@@ -109,7 +98,27 @@ public class UserInterface {
                 "0. Exit");
     }
 
+    private boolean checkLogin() {
+        System.out.println("Enter your card number:");
+        String userInputCardNumber = scan.nextLine();
+        System.out.println("Enter your PIN:");
+        String userInputPin = scan.nextLine();
 
+
+        if (DataBase.checkAccount(this.fileName, this.tableName, userInputCardNumber, userInputPin)) {
+
+            Account acc = new Account();
+            this.acc = acc;
+            System.out.println("You have successfully logged in!");
+            this.acc.setCardNumber(userInputCardNumber);
+            this.acc.setPinCode(userInputPin);
+            this.acc.setBalance(DataBase.getBalance(this.fileName, this.tableName, userInputCardNumber, userInputPin));
+            return true;
+        }
+        System.out.println("Wrong card number or PIN!");
+
+        return false;
+    }
 
 
 

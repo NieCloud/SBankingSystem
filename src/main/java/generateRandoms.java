@@ -17,10 +17,9 @@ class generateRandoms {
         }
 
         // Creating checksum
-        String[] splittedString = tempCard.toString().split("");
-        String card = checkForLuhnAlgorithm(splittedString);
+        String[] splintedString = tempCard.toString().split("");
 
-        return card;
+        return checkForLuhnAlgorithm(splintedString);
     }
 
     public static String generateRandomPin() {
@@ -34,15 +33,15 @@ class generateRandoms {
         return pin.toString();
     }
 
-    private static String checkForLuhnAlgorithm(String[] splittedString) {
+    private static String checkForLuhnAlgorithm(String[] splitString) {
 
         //setting integers instead of strings into array
-        int size = splittedString.length;
+        int size = splitString.length;
         int [] arr = new int [size];
         int [] checkedArray = new int [size];
 
         for(int i=0; i<size; i++) {
-            arr[i] = Integer.parseInt(splittedString[i]);
+            arr[i] = Integer.parseInt(splitString[i]);
             checkedArray[i] = arr[i];
         }
 
@@ -51,7 +50,7 @@ class generateRandoms {
             arr[i] *= 2;
         }
 
-        //3 Step - substract 9 for numbers over 9
+        //3 Step - subtract 9 for numbers over 9
         for (int i = 0; i < size - 1; i++) {
             if (arr[i] > 9 ) {
                 arr[i] -= 9;

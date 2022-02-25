@@ -27,5 +27,18 @@ class Account {
     }
 
 
+    void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
+    }
+
+    void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+
 
 }
