@@ -77,6 +77,10 @@ public class UserInterface {
                 case "3":
                     transferMoney();
                     break;
+                case "4":
+                    deleteAccount();
+                    start();
+                    break;
                 case "5":
                     start();
                     break;
@@ -165,7 +169,8 @@ public class UserInterface {
     }
 
     private void deleteAccount() {
-
+        DataBase.deleteAccount(this.fileName, this.tableName, this.acc.getCardNumber());
+        System.out.println("The account has been closed!");
     }
 
 }

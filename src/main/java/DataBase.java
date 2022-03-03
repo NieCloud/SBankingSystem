@@ -156,7 +156,7 @@ public class DataBase {
         String deleteAccount = "DELETE FROM " + tableName + " WHERE number = " + cardNumber;
 
         try (Connection conn = DriverManager.getConnection(dbURL); Statement statement = conn.createStatement()) {
-            statement.executeQuery(deleteAccount);
+            statement.executeUpdate(deleteAccount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
