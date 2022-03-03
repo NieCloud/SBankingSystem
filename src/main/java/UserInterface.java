@@ -154,6 +154,8 @@ public class UserInterface {
             System.out.println("Probably you made a mistake in the card number. Please try again!");
         } else if (!DataBase.checkAccount(this.fileName, this.tableName, userInput)) {
             System.out.println("Such a card does not exist.");
+        } else if (userInput.equals(this.acc.getCardNumber())) {
+            System.out.println("You can't transfer money to the same account!");
         } else {
             System.out.println("Enter how much money you want to transfer:");
             int userMoneyToTransfer = Integer.parseInt(scan.nextLine());
@@ -162,6 +164,8 @@ public class UserInterface {
                 System.out.println("Not enough money!");
             } else {
                 DataBase.addIncome(this.fileName, this.tableName, userInput, userMoneyToTransfer);
+                DataBase.addIncome(this.fileName, this.tableName, this.acc.getCardNumber(), -userMoneyToTransfer);
+                this.acc.setBalance(this.acc.getBalance() - userMoneyToTransfer);
                 System.out.println("Success!");
             }
 
