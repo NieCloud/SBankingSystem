@@ -33,7 +33,7 @@ class generateRandoms {
         return pin.toString();
     }
 
-    private static String checkForLuhnAlgorithm(String[] splitString) {
+    public static String checkForLuhnAlgorithm(String[] splitString) {
 
         //setting integers instead of strings into array
         int size = splitString.length;

@@ -40,7 +40,7 @@ public class DataBase {
             stmt.execute(sql); // create a new table executing query
 
             ResultSet rs = stmt.executeQuery(countNumberOfRows); // count number of rows
-            rowCount = (int)rs.getInt(1); // if we do have rows in result set - we return number of rows, otherwise - we return 0;
+            rowCount = (int) rs.getInt(1); // if we do have rows in result set - we return number of rows, otherwise - we return 0;
             System.out.println("Number of rows: " + rowCount);
 
         } catch (SQLException e) {
@@ -121,6 +121,44 @@ public class DataBase {
         return result;
     }
 
+    public static void addIncome(String fileName, String tableName, String cardNumber, int income) {
+        String dbURL = "jdbc:sqlite:" + fileName;
+
+        String addIncome = "UPDATE "
+                + tableName +
+                " SET balance = balance + ? WHERE number = ?;";
+
+        try (Connection conn = DriverManager.getConnection(dbURL)) {
+
+            // Disable auto-commit mode
+            conn.setAutoCommit(false);
+
+            try (
+                    PreparedStatement balanceUpdate = conn.prepareStatement(addIncome)) {
+
+                // update balance with income
+
+                balanceUpdate.setInt(1, income);
+                balanceUpdate.setString(2, cardNumber);
+                balanceUpdate.executeUpdate();
+
+                conn.commit();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
+    public static void deleteAccount(String fileName, String tableName, String cardNumber) {
+        String dbURL = "jdbc:sqlite:" + fileName;
+
+        String deleteAccount = "DELETE FROM " + tableName + " WHERE number = " + cardNumber;
+
+        try (Connection conn = DriverManager.getConnection(dbURL); Statement statement = conn.createStatement()) {
+            statement.executeQuery(deleteAccount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

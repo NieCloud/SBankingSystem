@@ -9,19 +9,19 @@ class Account {
         this.balance = 0;
     }
 
-    public String getCardNumber() {
+    String getCardNumber() {
         return cardNumber;
     }
 
-    public String getPinCode() {
+    String getPinCode() {
         return pinCode;
     }
 
-    public int getBalance() {
+    int getBalance() {
         return balance;
     }
 
-    public void returnCardCredentials() {
+    void returnCardCredentials() {
         System.out.println(this.cardNumber);
         System.out.println(this.pinCode);
     }

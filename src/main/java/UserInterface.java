@@ -1,4 +1,4 @@
-import javax.xml.crypto.Data;
+
 import java.util.Scanner;
 
 public class UserInterface {
@@ -72,6 +72,12 @@ public class UserInterface {
                     getBalance();
                     break;
                 case "2":
+                    addIncome();
+                    break;
+                case "3":
+                    transferMoney();
+                    break;
+                case "5":
                     start();
                     break;
             }
@@ -94,7 +100,10 @@ public class UserInterface {
 
     private void printAccountInterface() {
         System.out.println("1. Balance\n" +
-                "2. Log out\n" +
+                "2. Add Income\n" +
+                "3. Do Transfer\n" +
+                "4. Close account\n" +
+                "5. Log out\n" +
                 "0. Exit");
     }
 
@@ -107,8 +116,7 @@ public class UserInterface {
 
         if (DataBase.checkAccount(this.fileName, this.tableName, userInputCardNumber, userInputPin)) {
 
-            Account acc = new Account();
-            this.acc = acc;
+            this.acc = new Account();
             System.out.println("You have successfully logged in!");
             this.acc.setCardNumber(userInputCardNumber);
             this.acc.setPinCode(userInputPin);
@@ -120,6 +128,44 @@ public class UserInterface {
         return false;
     }
 
+    private void addIncome() {
+        System.out.println("Enter income: ");
+        int userInput = Integer.parseInt(scan.nextLine());
 
+        if (userInput >= 0) {
+            DataBase.addIncome(this.fileName, this.tableName, this.acc.getCardNumber(), userInput);
+            this.acc.setBalance(this.acc.getBalance() + userInput);
+            System.out.println("Income was added!\n");
+        }
+    }
+
+    private void transferMoney() {
+        System.out.println("Transfer\n" +
+                "Enter card number:");
+        String userInput = scan.nextLine();
+
+        String[] checkLuhn = userInput.toString().split("");
+
+        if (userInput.charAt(15) != generateRandoms.checkForLuhnAlgorithm(checkLuhn).charAt((15)) || checkLuhn.length != 16) {
+            System.out.println("Probably you made a mistake in the card number. Please try again!");
+        } else if (!DataBase.checkAccount(this.fileName, this.tableName, userInput)) {
+            System.out.println("Such a card does not exist.");
+        } else {
+            System.out.println("Enter how much money you want to transfer:");
+            int userMoneyToTransfer = Integer.parseInt(scan.nextLine());
+
+            if (this.acc.getBalance() < userMoneyToTransfer) {
+                System.out.println("Not enough money!");
+            } else {
+                DataBase.addIncome(this.fileName, this.tableName, userInput, userMoneyToTransfer);
+                System.out.println("Success!");
+            }
+
+        }
+    }
+
+    private void deleteAccount() {
+
+    }
 
 }
